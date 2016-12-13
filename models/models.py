@@ -6,8 +6,11 @@ class dietfacts(models.Model):
     _name = 'product.template'
     _inherit = 'product.template'
 
-    calories = fields.Integer()
-
+    calories = fields.Integer('Calories')
+    servingsize = fields.Float('Serving Size')
+    lastupdated = fields.Date('Last Updated')
+    
+    
 #     name = fields.Char()
 #     value = fields.Integer()
 #     value2 = fields.Float(compute="_value_pc", store=True)
