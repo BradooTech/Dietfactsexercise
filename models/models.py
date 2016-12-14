@@ -9,6 +9,7 @@ class dietfacts(models.Model):
     calories = fields.Integer('Calories')
     servingsize = fields.Float('Serving Size')
     lastupdated = fields.Date('Last Updated')
+    dietitem = fields.Boolean('DietItem')
     
     
 #     name = fields.Char()

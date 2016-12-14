@@ -8,18 +8,24 @@
                 <field name="categ_id" position="before">
                     <field name="calories"/>
                     <field name="servingsize"/>
+                    <field name="dietitem"/>
                 </field>
             </field>
         </record>
+        
+        
         <record id="dietfacts_product_template_only_form_view" model="ir.ui.view">
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="model">product.template</field>
             <field name="arch" type="xml">
+            
                 <field name="standard_price" position="after">
                     <group>
                         <field name="calories"/>
                         <field name="servingsize"/>
+                        <field name="dietitem"/>
                         <field name="lastupdated"/>
+                        
                     </group>
                 </field>
             </field>
@@ -31,9 +37,9 @@
             <field name="name">Dietfacts</field>
             <field name="res_model">product.template</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            
-
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[('dietitem','=',True)]</field>
+            <field name="context">{"default_dietitem": True}</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Clique para adicionar um novo dietfact
