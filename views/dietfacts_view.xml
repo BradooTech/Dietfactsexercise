@@ -1,28 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-    
-    	<record id="dietfacts_product_template_tree_view" model="ir.ui.view">
-    		<field name="inherit_id" ref="product.product_template_tree_view" />
-    		<field name="model">product.template</field>		
-    		<field name="arch" type="xml">
-    			<field name="categ_id" position="before">
-    				<field name="calories"/>
-    			</field>
-    		</field>
-    	</record>
-    	
-        <record id="dietfacts_product_template_only_form_view" model="ir.ui.view">
-            <field name="inherit_id" ref="product.product_template_only_form_view" />
-            <field name="model">product.template</field>        
+        <record id="dietfacts_product_template_tree_view" model="ir.ui.view">
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="model">product.template</field>
             <field name="arch" type="xml">
-               <field name="barcode" position="after">
+                <field name="categ_id" position="before">
                     <field name="calories"/>
                     <field name="servingsize"/>
-                    <field name="lastupdated"/>
-                </field> 
+                </field>
             </field>
-    	</record>
-    	
+        </record>
+        <record id="dietfacts_product_template_only_form_view" model="ir.ui.view">
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <field name="standard_price" position="after">
+                    <group>
+                        <field name="calories"/>
+                        <field name="servingsize"/>
+                        <field name="lastupdated"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+        
+        
+        
+        <record model="ir.actions.act_window" id="action_views_dietfacts_sessions_new">
+            <field name="name">Dietfacts</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            
+
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Clique para adicionar um novo dietfact
+                </p>
+                <p>
+                    Informacoes nutricionais
+                </p>
+            </field>
+        </record>
+            
+        
+        
+        <menuitem id="menu_dietfacts_root" 
+                name="Dietfacts"/>
+                
+                    
+        <menuitem id="menu_dietfacts_root_sessions"
+            name="Dietfacts menu" parent="menu_dietfacts_root"/>
+            
+        <menuitem action="action_views_dietfacts_sessions_new"
+                id="menu_action_views_dietfacte_sessions_new"
+                parent="menu_dietfacts_root_sessions"/>
+            
+         
+            
     </data>
 </odoo>
