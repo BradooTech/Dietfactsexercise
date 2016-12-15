@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from pygments.lexer import _inherit
 
 class dietfacts(models.Model):
     _name = 'product.template'
@@ -9,6 +10,21 @@ class dietfacts(models.Model):
     calories = fields.Integer('Calories')
     servingsize = fields.Float('Serving Size')
     lastupdated = fields.Date('Last Updated')
+    
+    
+class dietfacts_res_users_meal(models.Model):
+    _name = 'res.users.meal'
+    name = fields.Char('Meal name')
+    meal_date = fields.Datetime('Meal date')
+    #item_ids = fields.One2Many()
+    user_id = fields.Many2one('res.users','Meal user')
+    notes = fields.Text('Meal notes')
+    
+    
+    
+    
+    
+    
     #dietitem = fields.Boolean('DietItem')
     
     

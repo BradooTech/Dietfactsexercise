@@ -64,6 +64,27 @@
                 parent="menu_dietfacts_root_sessions"/>
             
          
+        <record model="ir.actions.act_window" id="meal_action_dietfacts">
+            <field name="name">Meals</field>
+            <field name="res_model">res.users.meal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Define a new Meal
+                </p>
+                
+            </field>
+        </record>
+        
+        
+        <menuitem action="meal_action_dietfacts"
+                id="menu_meal_action_dietfacts"
+                parent="menu_dietfacts_root_sessions"/>
+        
+        
+        
+         
             
     </data>
 </odoo>
