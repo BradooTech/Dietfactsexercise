@@ -16,11 +16,16 @@ class dietfacts_res_users_meal(models.Model):
     _name = 'res.users.meal'
     name = fields.Char('Meal name')
     meal_date = fields.Datetime('Meal date')
-    #item_ids = fields.One2Many()
+    item_ids = fields.One2many('res.users.mealitem','meal_id')
     user_id = fields.Many2one('res.users','Meal user')
     notes = fields.Text('Meal notes')
     
-    
+class dietfacts_res_users_mealitem(models.Model):
+    _name = 'res.users.mealitem'
+    meal_id = fields.Many2one('res.users.meal')
+    item_id = fields.Many2one('product.template','Menu Item')
+    servings = fields.Float('Servings')
+    notes = fields.Text('Meal notes')
     
     
     

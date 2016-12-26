@@ -64,6 +64,40 @@
                 parent="menu_dietfacts_root_sessions"/>
             
          
+        
+           
+        <record id="dietfacts_meal_form_view" model="ir.ui.view">
+            <field name="model">res.users.meal</field>
+            <field name="view_type">form</field>
+            <field name="arch" type="xml">
+            
+                    <form>
+                        
+                        <group>
+                            <field name="name"/>
+                            <field name="meal_date"/>
+                            <field name="user_id"/>
+                            <field name="notes"/>
+                        </group>
+                        
+                        <notebook>
+                            <page name="mealitems" string="Meal Items">
+                                <field name="item_ids" widget="One2many_list">
+                                    <tree string="Meal Items" editable="bottom">
+                                        <field name="item_id" />
+                                        <field name="servings" />
+                                        <field name="notes" />
+                                    </tree>
+                                </field>
+                            </page>    
+                        </notebook>
+                        
+                    </form>
+                                
+            </field>
+        </record>
+         
+         
         <record model="ir.actions.act_window" id="meal_action_dietfacts">
             <field name="name">Meals</field>
             <field name="res_model">res.users.meal</field>
@@ -82,9 +116,6 @@
                 id="menu_meal_action_dietfacts"
                 parent="menu_dietfacts_root_sessions"/>
         
-        
-        
-         
             
     </data>
 </odoo>
