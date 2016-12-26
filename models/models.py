@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from pygments.lexer import _inherit
+from bzrlib.transport import readonly
 
 class dietfacts(models.Model):
     _name = 'product.template'
@@ -19,6 +20,19 @@ class dietfacts_res_users_meal(models.Model):
     item_ids = fields.One2many('res.users.mealitem','meal_id')
     user_id = fields.Many2one('res.users','Meal user')
     notes = fields.Text('Meal notes')
+    totalcalories = fields.Integer(string="Total Calories", store=True, compute="_calccalories")
+    
+    @api.one
+    @api.depends('item_ids','item_ids.servings')
+    def _calccalories(self):
+        currentcalories = 0
+        
+        for item in self.item_ids:
+            caloriestocalculate = item.item_id.calories
+            servsize = item.servings
+            currentcalories = currentcalories + (caloriestocalculate * servsize)
+        
+        self.totalcalories = currentcalories  
     
 class dietfacts_res_users_mealitem(models.Model):
     _name = 'res.users.mealitem'
@@ -26,7 +40,8 @@ class dietfacts_res_users_mealitem(models.Model):
     item_id = fields.Many2one('product.template','Menu Item')
     servings = fields.Float('Servings')
     notes = fields.Text('Meal notes')
-    
+    calories = fields.Integer(related="item_id.calories", string="Calories per serving",
+                               store=True, readonly=True)
     
     
     

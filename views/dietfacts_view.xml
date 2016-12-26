@@ -26,6 +26,8 @@
                         
                         <field name="lastupdated"/>
                         
+                        
+                        
                     </group>
                 </field>
             </field>
@@ -78,6 +80,7 @@
                             <field name="meal_date"/>
                             <field name="user_id"/>
                             <field name="notes"/>
+                            <field name="totalcalories"/>
                         </group>
                         
                         <notebook>
@@ -85,6 +88,7 @@
                                 <field name="item_ids" widget="One2many_list">
                                     <tree string="Meal Items" editable="bottom">
                                         <field name="item_id" />
+                                        <field name="calories" />
                                         <field name="servings" />
                                         <field name="notes" />
                                     </tree>
