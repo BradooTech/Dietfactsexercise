@@ -9,6 +9,8 @@
                     <field name="calories"/>
                     <field name="servingsize"/>
                 </field>
+                
+                
             </field>
         </record>
         <record id="dietfacts_product_template_only_form_view" model="ir.ui.view">
@@ -16,7 +18,7 @@
             <field name="model">product.template</field>
             <field name="arch" type="xml">
                 <field name="standard_price" position="after">
-                    <group>
+                    <group attrs="{'invisible': [('categ_id','!=',3)]}">
                         <field name="calories"/>
                         <field name="servingsize"/>
                         <field name="lastupdated"/>
@@ -29,6 +31,7 @@
                             <tree editable="bottom" string="Nutri">
                                 <field name="nutrient_id"/>
                                 <field name="value"/>
+                                <field name="unityofmeasure"/>
                                 <field name="dailypercentage"/>
                             </tree>
                         </field>
@@ -67,12 +70,16 @@
             </field>
         </record>
         <menuitem id="menu_dietfacts_root" name="Dietfacts"/>
+        
         <menuitem id="menu_dietfacts_root_sessions"
             name="Dietfacts menu" parent="menu_dietfacts_root"/>
+            
         <menuitem action="action_views_dietfacts_sessions_new"
             id="menu_action_views_dietfacte_sessions_new" parent="menu_dietfacts_root_sessions"/>
+            
         <menuitem action="action_views_dietfacts_sessions_nutrient"
             id="menu_action_views_dietfacte_sessions_nutrient" parent="menu_dietfacts_root_sessions"/>
+            
         <record id="dietfacts_meal_form_view" model="ir.ui.view">
             <field name="model">res.users.meal</field>
             <field name="view_type">form</field>

@@ -17,14 +17,14 @@ class dietfacts_res_users_meal(models.Model):
     _name = 'res.users.meal'
     name = fields.Char('Meal name')
     meal_date = fields.Datetime('Meal date')
-    item_ids = fields.One2many('res.users.mealitem','meal_id')
-    user_id = fields.Many2one('res.users','Meal user')
+    item_ids = fields.One2many('res.users.mealitem', 'meal_id')
+    user_id = fields.Many2one('res.users', 'Meal user')
     notes = fields.Text('Meal notes')
     totalcalories = fields.Integer(string="Total Calories", store=True, compute="_calccalories")
     totalitems = fields.Integer(string="Meal items", compute="_calccalories", store=True) 
     
     @api.multi
-    @api.depends('item_ids','item_ids.servings')
+    @api.depends('item_ids', 'item_ids.servings')
     def _calccalories(self):
         currentcalories = 0
         currentitem = 0
@@ -43,7 +43,7 @@ class dietfacts_res_users_meal(models.Model):
 class dietfacts_res_users_mealitem(models.Model):
     _name = 'res.users.mealitem'
     meal_id = fields.Many2one('res.users.meal')
-    item_id = fields.Many2one('product.template','Menu Item')
+    item_id = fields.Many2one('product.template', 'Menu Item')
     servings = fields.Float('Servings')
     notes = fields.Text('Meal notes')
     calories = fields.Integer(related="item_id.calories", string="Calories per serving",
@@ -57,7 +57,7 @@ class dietfacts_product_nutrient(models.Model):
     name = fields.Char('Nutrient name')
     uom_id = fields.Many2one('product.uom', 'Unity of Measure')
     description = fields.Text('Description')
-    #meal_item_id = fields.Many2one('product.template','Meal')
+    # meal_item_id = fields.Many2one('product.template','Meal')
     
 
 class dietfacts_product_template_nutrient(models.Model):
@@ -66,7 +66,9 @@ class dietfacts_product_template_nutrient(models.Model):
     product_id = fields.Many2one('product.template', string='Diet Item')
     value = fields.Float('Value')
     dailypercentage = fields.Float('Daily Percentage')
-    #dietitem = fields.Boolean('DietItem')
+    unityofmeasure = fields.Char(related="nutrient_id.uom_id.name", string="Unity of measure",
+                                readonly=True)
+    # dietitem = fields.Boolean('DietItem')
     
     
 #     name = fields.Char()
