@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from openerp import exceptions
 from pygments.lexer import _inherit
 from bzrlib.transport import readonly
 
@@ -12,7 +13,34 @@ class dietfacts(models.Model):
     servingsize = fields.Float('Serving Size')
     lastupdated = fields.Date('Last Updated')
     meal_nutrient_ids = fields.One2many('product.template.nutrient', 'product_id')
+    nutrition_score = fields.Float(string="Nutrition Score", store=True)
     
+    
+    @api.onchange('meal_nutrient_ids')
+    def _calcscore(self):
+        currscore = 0
+        count = 0
+    
+        try:            
+            for nutrient in self.meal_nutrient_ids:
+                
+                if nutrient.unityofmeasure in ('g', 'kg', 'mg'):
+                    if nutrient.unityofmeasure == 'g':
+                        currscore += nutrient.value * 1000
+                    else:
+                        currscore += nutrient.value
+                    count += 1
+                else:
+                    raise exceptions.ValidationError('Nao esta dentro dos parametros de medida')
+                    break
+                
+            self.nutrition_score = currscore / count
+        
+        except exceptions.ValidationError:
+            raise exceptions.ValidationError('Nao esta dentro dos parametros de medida') 
+            
+            
+            
 class dietfacts_res_users_meal(models.Model):
     _name = 'res.users.meal'
     name = fields.Char('Meal name')
@@ -22,6 +50,16 @@ class dietfacts_res_users_meal(models.Model):
     notes = fields.Text('Meal notes')
     totalcalories = fields.Integer(string="Total Calories", store=True, compute="_calccalories")
     totalitems = fields.Integer(string="Meal items", compute="_calccalories", store=True) 
+    largemeal = fields.Boolean("Large Meal")
+    
+    @api.onchange('totalcalories')
+    def check_totalcalories(self):
+        if self.totalcalories > 500:
+            self.largemeal = True
+        else:
+            self.largemeal = False
+            
+    
     
     @api.multi
     @api.depends('item_ids', 'item_ids.servings')

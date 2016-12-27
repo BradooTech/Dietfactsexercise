@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="product.nutrition">
+        
+            <t t-call="report.html_container">
+                <t t-as="o" t-foreach="docs">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <h1>Nutrition Report</h1>
+                            <h2>Product Name: <span t-field="o.name"/>
+                            </h2>
+                            <p>Calories: <span t-field="o.calories"/>
+                            </p>
+                            <p>Serving Size: <span t-field="o.servingsize"/>
+                            </p>
+                            <p>Nutrition score: <span t-field="o.nutrition_score"/>
+                            </p>
+                            <h3>Nutrition Details</h3>
+                            <t t-as="nutrient" t-foreach="o.meal_nutrient_ids">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                    <span t-field="nutrient.nutrient_id.name"/>
+                                    </div>
+                                    <div class="col-xs-4">
+                                    <span t-field="nutrient.value"/>
+                                    </div>
+                                    <div class="col-xs-2">
+                                    <span t-field="nutrient.unityofmeasure"/>
+                                    </div>
+                                    <div class="col-xs-2">
+                                    <span t-field="nutrient.dailypercentage"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report file="product.nutrition" id="dietfacts_product"
+            model="product.template" name="product.nutrition"
+            report_type="qweb-pdf" string="Nutrition Products"/>
+    </data>
+</odoo>
