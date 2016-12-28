@@ -2,7 +2,6 @@
 <odoo>
     <data>
         <template id="product.nutrition">
-        
             <t t-call="report.html_container">
                 <t t-as="o" t-foreach="docs">
                     <t t-call="report.external_layout">
