@@ -1,7 +1,7 @@
 import xmlrpclib 
 import csv
-from docutils.nodes import row
-from pyasn1.type.univ import Integer
+
+
 
 server = 'http://localhost:8069'
 database = 'NewModuleDB'
@@ -47,7 +47,7 @@ for row in reader:
                            [{'name':row[0],'calories':row[1],'servingsize':row[2],'categ_id':3}])
     
        
-
+'''
 product_count2 = OdooApi.execute_kw(database, uid, pwd,
                                    'product.template',
                                    'search_read',
@@ -55,7 +55,7 @@ product_count2 = OdooApi.execute_kw(database, uid, pwd,
                                     {'fields':['name','meal_date','totalcalories','totalitems']})
 
 
-'''
+
 for prod in product_count2:
     if prod['name'] == 'ONUburger':
         print "Produto encontrado, ID = " ,prod['id'], "\nAlteracoes sendo realizadas..."
@@ -66,7 +66,7 @@ for prod in product_count2:
     else:
         print "Produto nao esta no ID " , prod['id']
 
-'''
+
 for prod in product_count2:
     print "Procurando ",prod, " ..."
     
@@ -82,6 +82,14 @@ for prod in product_count2:
                            [[prod['id']]])
     else:
         print "Produto nao esta no ID " , prod['id']
+'''
 
 
+reports_ids = OdooApi.execute_kw(database, uid, pwd, 'product.template', 'search',[[['categ_id','=',3]]])
+report = xmlrpclib.ServerProxy('{}/xmlrpc/2/report'.format(server))
+result = report.render_report(database, uid, pwd, 'product.nutrition', reports_ids)
+report_data = result['result'].decode('base64')
+
+arquivo = open('relatorio.pdf','w')
+arquivo.write(report_data)
     
