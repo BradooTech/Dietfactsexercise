@@ -23,6 +23,10 @@
                         <field name="lastupdated"/>
                     </group>
                 </field>
+                <field name="standard_price" position="attributes">
+                    <attribute name="t-if">calories &gt; 700</attribute>
+                    <field name="testcampo"/>
+                </field>
                 <notebook>
                     <page attrs="{'invisible': [('categ_id','!=',3)]}"
                         name="Nutrient" string="Nutrients">
@@ -44,7 +48,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,pivot</field>
             <field name="domain">[('categ_id.name','=','Diet Item')]</field>
-            <field name="context">{'default_categ_id':3}</field>
+            <field name="context">{'default_categ_id':1}</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Clique para adicionar um novo dietfact
@@ -141,7 +145,119 @@
                 </tree>
             </field>
         </record>
-        
-        
+        <record id="meal_action_dietfacts" model="ir.actions.act_window">
+            <field name="name">Meals</field>
+            <field name="res_model">res.users.meal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Define a new Meal
+                </p>
+            </field>
+        </record>
+        <record id="dietfacts_test_form_view" model="ir.ui.view">
+            <field name="model">dietfacts.test</field>
+            <field name="view_type">form</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <h1>Titulo do Form</h1>
+                        <field class="oe_highlight" clickable="True"
+                            name="state" widget="statusbar"/>
+                        <separator string="Novo titulo"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <h1>
+                                <field name="name" placeholder="Nome do teste"/>
+                            </h1>
+                            <h1>
+                                <field name="passwordteste" password="1"/>
+                            </h1>
+                        </group>
+                        <separator/>
+                        <group>
+                            <field name="idtest" readonly="1"/>
+                            <field domain="[('name','!=','Marcos')]"
+                                help="Adiciona um usuario de teste!"
+                                name="user_id" required="True"/>
+                            <field filename="name" name="arquivo"/>
+                            <field context="{'default_user_id':1}"
+                                name="products_ids"
+                                options="{'no_create': True}" widget="many2many_tags"/>
+                            <field name="nutri_ids"/>
+                        </group>
+                        <separator colspan="2"/>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_highlight oe_left" string="Clique"/>
+                        </div>
+                        <notebook string="NotebookTest">
+                            <page accesskey="B" string="Dados1">
+                                <group col="4" string="Titulo do grupo!">
+                                    <field colspan="4"
+                                    groups="openacademy.group_oa_manager"
+                                    name="sequence" string="sequence"/>
+                                    <!--newline/-->
+                                    <p>Teste de newline</p>
+                                    <p>Mais um teste</p>
+                                    <p>terceiro teste</p>
+                                    <newline/>
+                                    <p>Ultimo teste</p>
+                                </group>
+                            </page>
+                            <page string="Dados2">
+                                <group>
+                                    <field name="num_vezes" string="Numero de vezes"/>
+                                </group>
+                            </page>
+                            <page
+                                attrs="{'invisible': [('idtest','>',290)]}" string="Dados3">
+                                <group>
+                                    <p>ESTA EH UMA PAGE TESTE!</p>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="dietfacts_test_tree_view" model="ir.ui.view">
+            <field name="model">dietfacts.test</field>
+            <field name="view_type">tree</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="idtest > 150" default_order="name asc">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field attrs="{'invisible': [('idtest','>',250)]}" name="idtest"/>
+                    <field name="products_ids" widget="many2onebutton"/>
+                    <field name="num_vezes" widget="progressbar"/>
+                    <field groups="openacademy.group_oa_manager" name="state"/>
+                    <!--button string="clique" type="object" icon="fa-refresh text-primary" name="test_function" /-->
+                    <!--button string="clique" type="action" icon="fa-refresh text-primary" name="%(meal_action_dietfacts)d" /-->
+                    <button attrs="{'invisible': [('idtest','>',250)]}"
+                        confirm="Tem certeza que deseja fazer isso?"
+                        icon="fa-refresh text-primary"
+                        name="test_function" type="object"/>
+                    <button name="%(meal_action_dietfacts)d"
+                        states="ativo" string="Another button" type="action"/>
+                </tree>
+            </field>
+        </record>
+        <record id="test_action_dietfacts" model="ir.actions.act_window">
+            <field name="name">Teste</field>
+            <field name="res_model">dietfacts.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Define a new Test
+                </p>
+            </field>
+        </record>
+        <menuitem action="test_action_dietfacts"
+            id="menu_test_action_dietfacts" parent="menu_dietfacts_root_sessions"/>
     </data>
 </odoo>

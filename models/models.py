@@ -14,14 +14,14 @@ class dietfacts(models.Model):
     lastupdated = fields.Date('Last Updated')
     meal_nutrient_ids = fields.One2many('product.template.nutrient', 'product_id')
     nutrition_score = fields.Float(string="Nutrition Score", store=True)
-    
+    testcampo = fields.Char("Campo de teste", default="Isso eh um teste!")
     
     @api.onchange('meal_nutrient_ids')
     def _calcscore(self):
         currscore = 0
         count = 0
     
-        try:            
+        '''try:            
             for nutrient in self.meal_nutrient_ids:
                 
                 if nutrient.unityofmeasure in ('g', 'kg', 'mg'):
@@ -38,7 +38,7 @@ class dietfacts(models.Model):
         
         except exceptions.ValidationError:
             raise exceptions.ValidationError('Nao esta dentro dos parametros de medida') 
-            
+            '''
             
             
 class dietfacts_res_users_meal(models.Model):
@@ -117,3 +117,20 @@ class dietfacts_product_template_nutrient(models.Model):
 #     @api.depends('value')
 #     def _value_pc(self):
 #         self.value2 = float(self.value) / 100
+
+class dietfacts_test(models.Model):
+    _name = "dietfacts.test"
+    sequence = fields.Char("Sequence")
+    name = fields.Char("Test")
+    passwordteste = fields.Char("Password")
+    idtest = fields.Float("Id de teste")
+    num_vezes = fields.Float("Quantidade de vezes")
+    products_ids = fields.Many2many('product.template', string="Produtos")
+    state = fields.Selection([('ativo','Ativo'),('inativo','Inativo'),('aguardando','Aguardando')])
+    user_id = fields.Many2one('res.users')
+    nutri_ids = fields.One2many('product.template.nutrient','nutrient_id', string="Nutriente")
+    arquivo = fields.Binary('Arquivo')
+    
+    @api.multi
+    def test_function(self):
+        self.idtest = self.idtest * 2
