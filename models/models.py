@@ -95,6 +95,7 @@ class dietfacts_product_nutrient(models.Model):
     name = fields.Char('Nutrient name')
     uom_id = fields.Many2one('product.uom', 'Unity of Measure')
     description = fields.Text('Description')
+    test_id = fields.Many2one('dietfacts.test')
     # meal_item_id = fields.Many2one('product.template','Meal')
     
 
@@ -128,9 +129,40 @@ class dietfacts_test(models.Model):
     products_ids = fields.Many2many('product.template', string="Produtos")
     state = fields.Selection([('ativo','Ativo'),('inativo','Inativo'),('aguardando','Aguardando')])
     user_id = fields.Many2one('res.users')
-    nutri_ids = fields.One2many('product.template.nutrient','nutrient_id', string="Nutriente")
+    nutri_ids = fields.One2many('product.nutrient','test_id', string="Nutriente")
     arquivo = fields.Binary('Arquivo')
+    data_do_teste = fields.Datetime('Data do teste')
+    evento_teste = fields.One2many('dietfacts.test.events','test_id', string='Eventos')
     
     @api.multi
     def test_function(self):
-        self.idtest = self.idtest * 2
+        if self.idtest < 1:
+            self.idtest = 1
+            self.num_vezes += 1
+        else:
+            self.idtest = self.idtest * 2
+            self.num_vezes += 1
+            
+    @api.multi
+    def test_function_two(self):
+        if self.idtest < 2:
+            self.idtest = 2
+            self.num_vezes += 1
+        else:
+            self.idtest = self.idtest / 2
+            self.num_vezes += 1
+        
+        
+        
+    @api.multi
+    def kanban_test_function(self):
+        self.name = self.name + " %s"%(self.num_vezes)    
+        self.num_vezes += 1
+    
+class dietfacts_test_events(models.Model):
+    _name = 'dietfacts.test.events'
+    name = fields.Char('Nome do Evento')
+    data_evento_inicio = fields.Date('Data de inicio do evento')
+    data_evento_fim = fields.Date('Data de fim do evento')
+    test_id = fields.Many2one('dietfacts.test', string='Teste vinculado')
+    all_day_event = fields.Boolean('All Day?')
