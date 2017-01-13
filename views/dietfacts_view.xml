@@ -42,7 +42,6 @@
                 </notebook>
             </field>
         </record>
-        
         <record id="action_views_dietfacts_sessions_new" model="ir.actions.act_window">
             <field name="name">Dietfacts</field>
             <field name="res_model">product.template</field>
@@ -163,6 +162,7 @@
         <record id="dietfacts_test_form_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="view_type">form</field>
+            <field name="groups_id" />
             <field name="priority">1</field>
             <field name="arch" type="xml">
                 <form>
@@ -170,32 +170,48 @@
                         <h1>Titulo do Form</h1>
                         <field class="oe_highlight" clickable="True"
                             name="state" widget="statusbar"/>
+                        
+                        <button
+                            attrs="{'invisible': [('state','=','inativo')]}"
+                            class="oe_highlight oe_left"
+                            name="test_change_state" string="Inativar" type="object"/>
+                        <button
+                            attrs="{'invisible': [('state','=','ativo')]}"
+                            class="oe_highlight oe_left"
+                            name="test_change_state" string="Ativar" type="object"/>
+                        
+                        <button String="OLA!" />  
+                            
                         <separator string="Novo titulo"/>
                     </header>
                     <sheet>
+                    
+                        
                         <group>
-                            <h1>
-                                <field name="name" placeholder="Nome do teste"/>
-                            </h1>
+                            <field name="name" placeholder="Nome do teste"/>    
                             <h1>
                                 <field name="passwordteste" password="1"/>
                             </h1>
                         </group>
                         <separator/>
                         <group>
-                            <field name="idtest"/>
-                            <field domain="[('name','!=','Marcos')]"
+                        
+                            <field name="idtest"  />
+                            <field context="{'default_id':1 }"
                                 help="Adiciona um usuario de teste!"
-                                name="user_id" required="True"/>
+                                name="user_id" class="oe_no_button" required="True"/>
                             <field name="data_do_teste"/>
+                            <field name="teste_duration"/>
                             <field filename="name" name="arquivo"/>
                             <field name="products_ids"
                                 options="{'no_create': True}" widget="many2many_tags"/>
-                            <field name="nutri_ids" widget="many2many_checkboxes"/>
+                            <field domain="[('name','!=','Fat')]"
+                                name="nutri_ids" widget="many2many_checkboxes"/>
                         </group>
                         <separator colspan="2"/>
                         <div class="oe_button_box oe_right" name="button_box">
-                            <button class="oe_highlight oe_left" name="test_function_two" type="object" string="Clique"/>
+                            <button class="oe_highlight oe_left"
+                                name="test_function_two" string="Clique" type="object"/>
                             <separator colspan="2"/>
                             <button class="oe_highlight oe_left"
                                 icon="fa-ticket" name="test_function"
@@ -204,7 +220,6 @@
                         <notebook string="NotebookTest">
                             <page accesskey="B" string="Dados1">
                                 <group col="4" string="Titulo do grupo!">
-                                  
                                     <field colspan="4"
                                     groups="openacademy.group_oa_manager"
                                     name="sequence" string="sequence"/>
@@ -219,7 +234,7 @@
                             <page string="Dados2">
                                 <group>
                                     <field name="num_vezes" string="Numero de vezes"/>
-                                    <field name="evento_teste" />
+                                    <field context="{'default_test_id':id ,'default_name':'OlokoMew' }" name="evento_teste"/>
                                 </group>
                             </page>
                             <page
@@ -229,7 +244,13 @@
                                 </group>
                             </page>
                         </notebook>
+                        
+                        
                     </sheet>
+                    <div class="oe_chatter">
+                    <p>TESTANDO!</p>
+                    </div>
+                    
                 </form>
             </field>
         </record>
@@ -237,34 +258,42 @@
         
         <!--Tree view customizado para teste -->
         
-        
         <record id="dietfacts_test_tree_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="view_type">tree</field>
+            <field name="search_view_id" ref="dietfacts_test_search_view"/>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree decoration-danger="idtest > 150" default_order="name asc">
+                <tree  decoration-it="idtest > 150" default_order="name asc">
                     <field name="sequence" widget="handle"/>
-                    <field name="name"/>
+                    <field name="name" string="O NOME DO CABRA"/>
                     <field attrs="{'invisible': [('idtest','>',250)]}" name="idtest"/>
-                    <field name="products_ids" widget="radio" />
+                    <field name="products_ids" widget="many2many_tags"/>
                     <field name="num_vezes" widget="progressbar"/>
                     <field name="data_do_teste"/>
-                    <field groups="openacademy.group_oa_manager" name="state"/>
+                    <field name="user_id" widget="many2onebutton"/>
+                    <field groups="openacademy.group_oa_manager"
+                        name="state" widget="statusbar"/>
                     <!--button string="clique" type="object" icon="fa-refresh text-primary" name="test_function" /-->
                     <!--button string="clique" type="action" icon="fa-refresh text-primary" name="%(meal_action_dietfacts)d" /-->
-                    <button attrs="{'invisible': [('idtest','>',250)]}"
+                    <button attrs="{'readonly': [('idtest','>',250)]}"
                         confirm="Tem certeza que deseja fazer isso?"
-                        icon="fa-refresh text-primary"
+                        icon="fa-book"
                         name="test_function" type="object"/>
+                    
+                    <button confirm="Tem certeza que deseja fazer isso?"
+                        icon="fa-list"
+                        name="test_function_two" type="object"/>
+                        
+                        
                     <button name="%(meal_action_dietfacts)d"
                         states="ativo" string="Another button" type="action"/>
+ 
                 </tree>
             </field>
         </record>
         
         <!--Graph view customizado para teste -->
-        
         
         <record id="dietfacts_test_graph_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
@@ -296,6 +325,63 @@
             </field>
         </record>
         
+        <!--Gantt view customizado para teste -->
+        
+        <record id="dietfacts_test_gantt_view" model="ir.ui.view">
+            <field name="model">dietfacts.test</field>
+            <field name="view_type">gantt</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <gantt consolidate="num_dias_test"
+                    date_delay="teste_duration"
+                    date_start="data_do_teste"
+                    default_group_by="user_id" duration_unit="day" fold_last_level="true">
+                    <field name="name"/>
+                    <!--field name="idteste"/-->
+                </gantt>
+            </field>
+        </record>
+        
+        <!--Search view customizado para teste -->
+        
+        <record id="dietfacts_test_search_view" model="ir.ui.view">
+            <field name="model">dietfacts.test</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <search string="Search View do modulo de testes">
+                    
+                    
+                    <field name="name" string="Nome do registro" groups="openacademy.group_oa_manager" />
+                    <field name="state" filter_domain="[('state', 'ilike', self)]" />
+                    <field name="products_ids" widget="selection"/>
+                    <field name="idtest" operator="+" />
+                    
+                    
+                </search>
+            </field>
+        </record>
+        
+        
+        <!--Diagram view customizado para teste >
+        
+        <record id="dietfacts_test_diagram_view" model="ir.ui.view">
+            <field name="model">dietfacts.test</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <diagram string="Diagrama Teste">
+                    <node object="dietfacts.test">
+                        <field name="name"/>
+                    </node>
+                    <arrow object="dietfacts.test.events" 
+                    source="test_id"
+                    destination="evento_teste">
+                        
+                        
+                    </arrow>
+                </diagram>
+            </field>
+        </record-->
+        
         
         <!--Calendar view customizado para teste -->
         
@@ -303,40 +389,33 @@
             <field name="model">dietfacts.test.events</field>
             <field name="view_type">calendar</field>
             <field name="arch" type="xml">
-                <calendar string="Calendario de testes" color="name" 
-                event_open_popup="True" date_start="data_evento_inicio"
-                quick_add="True" all_day="all_day_event" mode="month" >
-                    
+                <calendar all_day="all_day_event" color="name"
+                    date_start="data_evento_inicio"
+                    event_open_popup="True" mode="month"
+                    quick_add="True" string="Calendario de testes">
                     <field name="name"/>
-                    
-                    <field name="test_id" />
-                    
+                    <field name="test_id"/>
                 </calendar>
             </field>
         </record>
         <!--Form view dos eventos customizados para teste -->
-        
-         <record id="dietfacts_test_events_form_view" model="ir.ui.view">
+        <record id="dietfacts_test_events_form_view" model="ir.ui.view">
             <field name="model">dietfacts.test.events</field>
             <field name="view_type">form</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
                 <form>
-                   <group>
-                    <field name="name" />
-                    <field name="data_evento_inicio" />
-                    <field name="data_evento_fim" />
-                    <field name="all_day_event" />
-                       
-                   </group> 
-                    
+                    <group>
+                        <field name="name"/>
+                        <field name="data_evento_inicio"/>
+                        <field name="data_evento_fim"/>
+                        <field name="all_day_event"/>
+                        <field name="test_id"/>
+                    </group>
                 </form>
-                               
             </field>
         </record>
-        
         <!--Kanban view customizado para teste -->
-        
         <record id="dietfacts_test_kanban_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="name">Kanban Diet Test</field>
@@ -349,7 +428,6 @@
                     <templates>
                         <t t-name="kanban-box">
                             <div>
-                            
                                 <h1>
                                     <t t-esc="record.name.value"/>
                                 </h1>
@@ -361,14 +439,12 @@
                                 </p>
                                 <p>Data do teste: <field name="data_do_teste"/>
                                 </p>
-                                
                                 <button class="oe_stat_button"
                                     icon="fa-dollar"
                                     name="kanban_test_function" type="object"/>
-                                
                                 <button icon="fa-dollar" string="Edit" type="edit"/>
-                                <button icon="fa-calendar-o" string="Edit" type="delete"/>
-                                    
+                                <button icon="fa-calendar-o"
+                                    string="Edit" type="delete"/>
                             </div>
                         </t>
                     </templates>
@@ -376,21 +452,22 @@
             </field>
         </record>
         
+        <!-- Actions para chamar as views -->
+        
         <record id="test_action_dietfacts" model="ir.actions.act_window">
             <field name="name">Teste</field>
             <field name="res_model">dietfacts.test</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,kanban,form,pivot,graph</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,gantt</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Define a new Test
                 </p>
             </field>
         </record>
+        
         <menuitem action="test_action_dietfacts"
             id="menu_test_action_dietfacts" parent="menu_dietfacts_root_sessions"/>
-            
-            
         <record id="test_events_action_dietfacts" model="ir.actions.act_window">
             <field name="name">Teste_Calendar</field>
             <field name="res_model">dietfacts.test.events</field>
@@ -402,9 +479,7 @@
                 </p>
             </field>
         </record>
-        
         <menuitem action="test_events_action_dietfacts"
-            id="menu_test_events_action_dietfacts" parent="menu_dietfacts_root_sessions"/>    
-            
+            id="menu_test_events_action_dietfacts" parent="menu_dietfacts_root_sessions"/>
     </data>
 </odoo>

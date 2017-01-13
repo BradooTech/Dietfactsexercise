@@ -125,14 +125,17 @@ class dietfacts_test(models.Model):
     name = fields.Char("Test")
     passwordteste = fields.Char("Password")
     idtest = fields.Float("Id de teste")
-    num_vezes = fields.Float("Quantidade de vezes")
+    num_vezes = fields.Integer("Quantidade de vezes")
     products_ids = fields.Many2many('product.template', string="Produtos")
-    state = fields.Selection([('ativo','Ativo'),('inativo','Inativo'),('aguardando','Aguardando')])
+    state = fields.Selection([('inativo','Inativo'),('aguardando','Aguardando'),('ativo','Ativo')])
     user_id = fields.Many2one('res.users')
     nutri_ids = fields.One2many('product.nutrient','test_id', string="Nutriente")
     arquivo = fields.Binary('Arquivo')
     data_do_teste = fields.Datetime('Data do teste')
     evento_teste = fields.One2many('dietfacts.test.events','test_id', string='Eventos')
+    teste_duration = fields.Integer('Duration')
+    num_dias_test = fields.Integer('Numero de dias', related='teste_duration')
+    
     
     @api.multi
     def test_function(self):
@@ -152,8 +155,21 @@ class dietfacts_test(models.Model):
             self.idtest = self.idtest / 2
             self.num_vezes += 1
         
+    @api.multi
+    def test_change_state(self):
+        if self.state == 'ativo':
+            self.state =  'inativo'
+        elif self.state == 'aguardando':
+            self.state = 'ativo'
+        else:
+            self.state = 'ativo'
+            
         
-        
+    @api.multi
+    def test_onwrite(self):
+        return self.nutri_ids
+    
+    
     @api.multi
     def kanban_test_function(self):
         self.name = self.name + " %s"%(self.num_vezes)    
