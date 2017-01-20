@@ -156,62 +156,91 @@
                 </p>
             </field>
         </record>
-        
         <!--Form view customizado para teste -->
-        
         <record id="dietfacts_test_form_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="view_type">form</field>
-            <field name="groups_id" />
+            <field name="groups_id"/>
             <field name="priority">1</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
                         <h1>Titulo do Form</h1>
-                        <field class="oe_highlight" clickable="True"
+                        <field class="oe_highlight " clickable="True"
                             name="state" widget="statusbar"/>
-                        
                         <button
                             attrs="{'invisible': [('state','=','inativo')]}"
-                            class="oe_highlight oe_left"
+                            class="oe_highlight oe_left "
                             name="test_change_state" string="Inativar" type="object"/>
                         <button
                             attrs="{'invisible': [('state','=','ativo')]}"
-                            class="oe_highlight oe_left"
+                            class="oe_highlight oe_left "
                             name="test_change_state" string="Ativar" type="object"/>
-                        
-                        <button String="OLA!" />  
-                            
+                        <button String="OLA!"/>
                         <separator string="Novo titulo"/>
                     </header>
                     <sheet>
-                    
-                        
+                        <div class="oe_button_box o_full" name="button_box">
+                            <button class="btn btn-sm oe_stat_button" type="button">
+                                <div class="fa fa-user-plus o_button_icon mt8"/>
+                                <div class="o_form_field o_stat_info">
+                                    <p>Teste Botao</p>
+                                </div>
+                            </button>
+                            <button class="oe_stat_button"
+                                icon="fa-calendar-o" type="object">
+                                <field name="idtest" string="Sessions" widget="statinfo"/>
+                            </button>
+                            <button class="btn btn-sm oe_stat_button"
+                                name="test_function_two" type="object">
+                                <div class="fa fa-paper-plane o_button_icon mt8"/>
+                                <div class="o_form_field o_stat_info">
+                                    <p>Novo Botao</p>
+                                </div>
+                            </button>
+                            <button class="btn btn-sm oe_stat_button"
+                                name="test_function_three" type="object">
+                                <div>
+                                    <field name="is_active"
+                                    options="{&quot;terminology&quot;: &quot;archive&quot;}" widget="boolean_button"/>
+                                </div>
+                            </button>
+                        </div>
                         <group>
-                            <field name="name" placeholder="Nome do teste"/>    
+                            <field name="name" placeholder="Nome do teste"/>
                             <h1>
                                 <field name="passwordteste" password="1"/>
                             </h1>
+                            <!-- <t t-if="state == 'oloko'">
+                                <p><t t-esc="idtest"/></p>
+                            </t>
+                             -->
                         </group>
                         <separator/>
                         <group>
-                        
-                            <field name="idtest"  />
-                            <field context="{'default_id':1 }"
+                                          
+                            <field name="phone" widget="sparkline"/>
+                            <field name="float_teste"
+                                options="{'currency': True}" widget="monetary"/>
+                            <field class="oe_no_button"
+                                context="{'default_id':1 }"
                                 help="Adiciona um usuario de teste!"
-                                name="user_id" class="oe_no_button" required="True"/>
+                                name="user_id" required="True" widget="selection"/>
                             <field name="data_do_teste"/>
                             <field name="teste_duration"/>
                             <field filename="name" name="arquivo"/>
+                            <field name="prioridade" widget="priority"/>
                             <field name="products_ids"
                                 options="{'no_create': True}" widget="many2many_tags"/>
                             <field domain="[('name','!=','Fat')]"
                                 name="nutri_ids" widget="many2many_checkboxes"/>
+                            
                         </group>
                         <separator colspan="2"/>
                         <div class="oe_button_box oe_right" name="button_box">
                             <button class="oe_highlight oe_left"
-                                name="test_function_two" string="Clique" type="object"/>
+                                name="test_function_two" string="Clique"
+                                type="object" widget="widgetonbutton"/>
                             <separator colspan="2"/>
                             <button class="oe_highlight oe_left"
                                 icon="fa-ticket" name="test_function"
@@ -233,8 +262,12 @@
                             </page>
                             <page string="Dados2">
                                 <group>
-                                    <field name="num_vezes" string="Numero de vezes"/>
-                                    <field context="{'default_test_id':id ,'default_name':'OlokoMew' }" name="evento_teste"/>
+                                    <button class="oe_stat_button">
+                                    <field name="num_vezes"
+                                    string="Numero de vezes" widget="percentpie"/>
+                                    </button>
+                                    <field
+                                    context="{'default_test_id':id ,'default_name':'OlokoMew' }" name="evento_teste"/>
                                 </group>
                             </page>
                             <page
@@ -243,58 +276,52 @@
                                     <p>ESTA EH UMA PAGE TESTE!</p>
                                 </group>
                             </page>
+                            <page string="Dados_PDF">
+                                <group>
+                                    <field name="manual_pdf" widget="pdf_viewer"/>
+                                </group>
+                            </page>
                         </notebook>
-                        
-                        
                     </sheet>
                     <div class="oe_chatter">
-                    <p>TESTANDO!</p>
+                        <p>TESTANDO!</p>
                     </div>
-                    
                 </form>
             </field>
         </record>
-        
-        
         <!--Tree view customizado para teste -->
-        
         <record id="dietfacts_test_tree_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
-            <field name="view_type">tree</field>
+            <field name="view_type">form</field>
             <field name="search_view_id" ref="dietfacts_test_search_view"/>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree  decoration-it="idtest > 150" default_order="name asc">
+                <tree decoration-it="idtest > 150" default_order="name asc">
                     <field name="sequence" widget="handle"/>
                     <field name="name" string="O NOME DO CABRA"/>
                     <field attrs="{'invisible': [('idtest','>',250)]}" name="idtest"/>
                     <field name="products_ids" widget="many2many_tags"/>
                     <field name="num_vezes" widget="progressbar"/>
                     <field name="data_do_teste"/>
-                    <field name="user_id" widget="many2onebutton"/>
+                    <field name="is_active" widget="boolean_button"/>
+                    <field name="phone" widget="sparkline"/>
+                    <field name="prioridade" widget="priority"/>
                     <field groups="openacademy.group_oa_manager"
                         name="state" widget="statusbar"/>
                     <!--button string="clique" type="object" icon="fa-refresh text-primary" name="test_function" /-->
                     <!--button string="clique" type="action" icon="fa-refresh text-primary" name="%(meal_action_dietfacts)d" /-->
                     <button attrs="{'readonly': [('idtest','>',250)]}"
                         confirm="Tem certeza que deseja fazer isso?"
-                        icon="fa-book"
-                        name="test_function" type="object"/>
-                    
+                        icon="fa-book" name="test_function" type="object"/>
                     <button confirm="Tem certeza que deseja fazer isso?"
-                        icon="fa-list"
-                        name="test_function_two" type="object"/>
-                        
-                        
+                        icon="fa-list" name="test_function_two" type="object"/>
                     <button name="%(meal_action_dietfacts)d"
-                        states="ativo" string="Another button" type="action"/>
- 
+                        states="ativo" string="Another button"
+                        type="action" widget="widgetonbutton"/>
                 </tree>
             </field>
         </record>
-        
         <!--Graph view customizado para teste -->
-        
         <record id="dietfacts_test_graph_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="view_type">graph</field>
@@ -308,9 +335,7 @@
                 </graph>
             </field>
         </record>
-        
         <!--Pivot view customizado para teste -->
-        
         <record id="dietfacts_test_pivot_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="view_type">pivot</field>
@@ -324,9 +349,7 @@
                 </pivot>
             </field>
         </record>
-        
         <!--Gantt view customizado para teste -->
-        
         <record id="dietfacts_test_gantt_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="view_type">gantt</field>
@@ -341,27 +364,38 @@
                 </gantt>
             </field>
         </record>
-        
         <!--Search view customizado para teste -->
-        
         <record id="dietfacts_test_search_view" model="ir.ui.view">
             <field name="model">dietfacts.test</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
                 <search string="Search View do modulo de testes">
-                    
-                    
-                    <field name="name" string="Nome do registro" groups="openacademy.group_oa_manager" />
-                    <field name="state" filter_domain="[('state', 'ilike', self)]" />
-                    <field name="products_ids" widget="selection"/>
-                    <field name="idtest" operator="+" />
-                    
-                    
+                    <field groups="openacademy.group_oa_manager"
+                        name="name" string="Nome do registro"/>
+                    <field filter_domain="[('state', 'ilike', self)]" name="state"/>
+                    <field domain="[('calories','>',100)]"
+                        name="products_ids" widget="selection"/>
+                    <field name="idtest" operator="+"/>
+                    <filter domain="[('state', '=', 'ativo')]"
+                        name="ativos_filtro" string="Ativos"/>
+                    <filter domain="[('state', '=', 'inativo')]"
+                        name="inativos_filtro" string="Inativos"/>
+                    <separator/>
+                    <filter domain="[('idtest', '>', 250)]"
+                        help="Filtra os casos em que as calories sao maiores que 250"
+                        name="teste_vezes" string="High vezes"/>
+                    <group expand="0" string="Group By">
+                        <filter context="{'group_by':'state'}"
+                            domain="[]" name="groupby_state" string="States"/>
+                    </group>
+                    <group string="Novo Filtro">
+                        <filter
+                            domain="[('idtest', '&lt;=', 250), ('state','=','ativo')]"
+                            help="What THE HELL!" name="teste_Low_vezes" string="Low vezes"/>
+                    </group>
                 </search>
             </field>
         </record>
-        
-        
         <!--Diagram view customizado para teste >
         
         <record id="dietfacts_test_diagram_view" model="ir.ui.view">
@@ -381,10 +415,7 @@
                 </diagram>
             </field>
         </record-->
-        
-        
         <!--Calendar view customizado para teste -->
-        
         <record id="dietfacts_test_events_calendar_view" model="ir.ui.view">
             <field name="model">dietfacts.test.events</field>
             <field name="view_type">calendar</field>
@@ -420,52 +451,56 @@
             <field name="model">dietfacts.test</field>
             <field name="name">Kanban Diet Test</field>
             <field name="arch" type="xml">
-                <kanban class="oe_background_grey"
-                    default_group_by="data_do_teste"
-                    default_order="name asc" quick_create="true">
+                <kanban class="o_kanban_small_column"
+                    default_group_by="state" default_order="name asc" quick_create="true">
                     <field name="name"/>
                     <field name="idtest"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div>
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                                 <h1>
                                     <t t-esc="record.name.value"/>
                                 </h1>
                                 <h3>
-                                    <t t-esc="record.idtest.value"/>
+                                    <field name="idtest" widget="gauge"/>
                                 </h3>
                                 <p>
                                     <strong>-----------------------------------------</strong>
+                                    <field name="prioridade" widget="priority"/>
                                 </p>
                                 <p>Data do teste: <field name="data_do_teste"/>
                                 </p>
+                                <field name="phone" widget="sparkline"/>
+                                <field name="kanban_state" widget="bullet_state"/>
                                 <button class="oe_stat_button"
-                                    icon="fa-dollar"
+                                    icon="fa fa-dollar"
                                     name="kanban_test_function" type="object"/>
-                                <button icon="fa-dollar" string="Edit" type="edit"/>
-                                <button icon="fa-calendar-o"
-                                    string="Edit" type="delete"/>
+                                <button class="oe_stat_button">
+                                    <div class="fa fa-dollar o_button_icon mt8"/>
+                                    <div class="o_stat_info">
+                                    <p>Outro botão</p>
+                                    </div>
+                                </button>
+                                <!-- <button icon="fa fa-dollar" string="Edit" type="edit"/> -->
                             </div>
                         </t>
                     </templates>
                 </kanban>
             </field>
         </record>
-        
         <!-- Actions para chamar as views -->
-        
         <record id="test_action_dietfacts" model="ir.actions.act_window">
             <field name="name">Teste</field>
             <field name="res_model">dietfacts.test</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,kanban,form,pivot,graph,gantt</field>
+            <field name="context">{'search_default_ativos_filtro':1}</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Define a new Test
                 </p>
             </field>
         </record>
-        
         <menuitem action="test_action_dietfacts"
             id="menu_test_action_dietfacts" parent="menu_dietfacts_root_sessions"/>
         <record id="test_events_action_dietfacts" model="ir.actions.act_window">

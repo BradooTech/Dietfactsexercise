@@ -135,6 +135,14 @@ class dietfacts_test(models.Model):
     evento_teste = fields.One2many('dietfacts.test.events','test_id', string='Eventos')
     teste_duration = fields.Integer('Duration')
     num_dias_test = fields.Integer('Numero de dias', related='teste_duration')
+    float_teste = fields.Float('Float de teste')
+    opcoes_escolha = fields.Selection([('opcao1','Opcao 1'),('opca2','Opcao 2'),('opcao3','Opcao 3')])
+    phone = fields.Char('Telefone')
+    is_active = fields.Boolean("Ativo?") 
+    prioridade = fields.Selection([('0','Nenhuma'),('1','baixa'),('2','media'),('3','alta')])
+    kanban_state = fields.Selection([('normal', 'Normal'),('blocked', 'Blocked'),('done', 'Ready for next stage')])
+    manual_pdf = fields.Binary('Manual')
+    
     
     
     @api.multi
@@ -174,6 +182,15 @@ class dietfacts_test(models.Model):
     def kanban_test_function(self):
         self.name = self.name + " %s"%(self.num_vezes)    
         self.num_vezes += 1
+        
+    @api.multi
+    def test_function_three(self):
+        if self.is_active == True:
+            self.is_active = False
+        else:
+            self.is_active = True
+        
+            
     
 class dietfacts_test_events(models.Model):
     _name = 'dietfacts.test.events'
